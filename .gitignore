@@ -2,4 +2,5 @@
 .DS_Store
 *.pdf
 /chat
+/storage
 __pycache__

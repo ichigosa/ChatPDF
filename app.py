@@ -13,19 +13,27 @@ api_key = os.environ["OPENAI_API_KEY"]
 
 loader = PyMuPDFLoader(pdf_path)
 documents = loader.load()
+print("document loading done")
 
 text_splitter = CharacterTextSplitter(separator="\n", chunk_size=1000, chunk_overlap=200, length_function=len)
 texts = text_splitter.split_documents(documents)
+print("text split done")
 
 embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-vectordb = Chroma.from_documents(documents=texts,
-                                 embedding=embeddings,
-                                 persist_directory=persist_directory)
-vectordb.persist()
+print("embedding done")
 
-retriever = vectordb.as_retriever(searcg_kwargs={"k": 3})
-llm = ChatOpenAI(model="gpt-3.5-turbo-0613", openai_api_key=api_key)
+if len(os.listdir(persist_directory)) == 0:
+    vectordb = Chroma.from_documents(documents=texts,
+                                    embedding=embeddings,
+                                    persist_directory=persist_directory)
+    vectordb.persist()
 
+else: vectordb = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
+
+retriever = vectordb.as_retriever()
+print("vector db loaded")
+
+llm = ChatOpenAI(client=any, model="gpt-3.5-turbo-0613", openai_api_key=api_key)
 qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
 while True:
