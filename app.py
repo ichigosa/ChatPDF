@@ -33,11 +33,13 @@ else: vectordb = Chroma(persist_directory=persist_directory, embedding_function=
 retriever = vectordb.as_retriever()
 print("vector db loaded")
 
-llm = ChatOpenAI(client=any, model="gpt-3.5-turbo-0613", openai_api_key=api_key)
+llm = ChatOpenAI(client=any, model="gpt-3.5-turbo", openai_api_key=api_key)
 qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
 
+print("\n============================================================")
+
 while True:
-    user_input = input("Enter a query: ")
+    user_input = input("\nEnter a query: ")
     if user_input == "exit":
         break
 
