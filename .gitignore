@@ -1,4 +1,5 @@
 # Mac OS Files
 .DS_Store
+*.pdf
 /chat
 __pycache__
