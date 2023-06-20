@@ -1,8 +1,7 @@
 import os
 from langchain.document_loaders import PyMuPDFLoader
 
-OpenAI_API_Key = os.environ['OPENAI_API_KEY']
-print(OpenAI_API_Key)
+openai.api_key = os.environ['OPENAI_AI_KEY']
 
-loader = PyMuPDFLoader("./docs/example.pdf")
+loader = PyMuPDFLoader(/path/to/pdf)
 documents = loader.load()
